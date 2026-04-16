@@ -94,9 +94,7 @@ public class Main {
                 2L, "Mariadele", "Di Biase", "mariadele@email.com", "pass123");
         utenteRepository.save(leader);
 
-        Utente destinatario = new Utente(
-                3L, "Fabiana", "Felicioni", "fabiana@email.com", "pass123");
-        utenteRepository.save(destinatario);
+        Utente destinatario = authController.registrati("Fabiana", "Felicioni", "fabiana@email.com", "pass123");
 
         // UC1 - Creare Team
         System.out.println("UC1: Creare Team");
