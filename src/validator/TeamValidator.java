@@ -27,4 +27,13 @@ public class TeamValidator {
         }
         System.out.println("Input iscriviTeam validato correttamente.");
     }
+    public void validateNomeTeam(String nomeTeam) {
+        if (nomeTeam.length() < 3) {
+            throw new IllegalArgumentException("Nome team deve essere di almeno 3 caratteri");
+        }
+        if (nomeTeam.length() > 50) {
+            throw new IllegalArgumentException("Nome team non può superare i 50 caratteri");
+        }
+        System.out.println("Nome team validato correttamente.");
+    }
 }
