@@ -6,6 +6,18 @@ import model.*;
 import repository.*;
 import service.*;
 import validator.*;
+import controller.SottomissioneController;
+import controller.ValutazioneController;
+import model.Giudice;
+import model.Mentore;
+import model.Sottomissione;
+import model.Valutazione;
+import repository.SottomissioneRepositoryImpl;
+import repository.ValutazioneRepositoryImpl;
+import service.SottomissioneService;
+import service.ValutazioneService;
+import validator.SottomissioneValidator;
+import validator.ValutazioneValidator;
 
 public class Main {
 
