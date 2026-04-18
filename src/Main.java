@@ -148,7 +148,6 @@ public class Main {
                 new ValutazioneValidator()
         );
 
-// Setup dati iniziali iterazione 3
         Hackathon hackathon3 = hackathonController.creaHackathon(
                 "HackathonTest3", "Regolamento3", "Milano", 3000.0, 5, organizzatore);
         hackathonController.avviaFaseIscrizione(hackathon3.getId(), organizzatore.getId());
@@ -185,7 +184,6 @@ public class Main {
 
 // UC3 - Inviare Sottomissione
         System.out.println("UC3: Inviare Sottomissione");
-        hackathonController.avviaFaseSvolgimento(hackathon3.getId(), organizzatore.getId());
         Sottomissione sottomissione = sottomissioneController.inviaSottomissione(
                 team3.getId(), hackathon3.getId(),
                 "https://github.com/team3/progetto", leader3.getId());
@@ -207,7 +205,7 @@ public class Main {
 
 // UC6 - Valutare Sottomissione
         System.out.println("UC6: Valutare Sottomissione");
-        hackathonController.concludiFaseSvolgimento(hackathon3.getId(), organizzatore.getId());
+        hackathonController.avviaFaseSvolgimento(hackathon3.getId(), organizzatore.getId());
         Valutazione valutazione = valutazioneController.valutaSottomissione(
                 sottomissione.getId(), "Ottimo lavoro", 9, giudice);
         System.out.println("Valutazione creata con punteggio: " + valutazione.getPunteggio());
