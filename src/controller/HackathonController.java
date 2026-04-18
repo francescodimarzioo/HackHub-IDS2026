@@ -4,6 +4,7 @@ import model.Hackathon;
 import model.Organizzatore;
 import service.HackathonService;
 import validator.HackathonValidator;
+import model.Mentore;
 
 public class HackathonController {
 
