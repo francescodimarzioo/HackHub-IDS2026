@@ -123,6 +123,101 @@ public class Main {
                 invito.getId(), "ACCETTATO", destinatario.getId());
         System.out.println("Invito stato: " + risposta.getStato());
         System.out.println();
+        SottomissioneRepositoryImpl sottomissioneRepository = new SottomissioneRepositoryImpl();
+        ValutazioneRepositoryImpl valutazioneRepository = new ValutazioneRepositoryImpl();
 
+        SottomissioneController sottomissioneController = new SottomissioneController(
+                new SottomissioneService(sottomissioneRepository, teamRepository),
+                new SottomissioneValidator()
+        );
+
+        ValutazioneController valutazioneController = new ValutazioneController(
+                new ValutazioneService(valutazioneRepository, sottomissioneRepository),
+                new ValutazioneValidator()
+        );
+
+// Setup dati iniziali iterazione 3
+        Hackathon hackathon3 = hackathonController.creaHackathon(
+                "HackathonTest3", "Regolamento3", "Milano", 3000.0, 5, organizzatore);
+        hackathonController.avviaFaseIscrizione(hackathon3.getId(), organizzatore.getId());
+
+        LeaderTeam leader3 = new LeaderTeam(
+                4L, "Mario", "Di Ciano", "mario@email.com", "pass123");
+        utenteRepository.save(leader3);
+
+        Team team3 = teamController.creaTeam(hackathon3.getId(), "TeamTest3", leader3);
+        teamController.iscriviTeam(team3.getId(), hackathon3.getId(), leader3.getId());
+        hackathonController.concludiFaseIscrizione(hackathon3.getId(), organizzatore.getId());
+
+        Giudice giudice = new Giudice(
+                5L, "Luca", "Di Crescenzo", "luca@email.com", "pass123",
+                "Bio", "linkedin.com/luca", "Criterio");
+
+// UC1 - Modificare Hackathon
+        System.out.println("UC1: Modificare Hackathon");
+        Hackathon hackathon3b = hackathonController.creaHackathon(
+                "HackathonDaModificare", "Regolamento", "Roma", 500.0, 3, organizzatore);
+        hackathonController.modificaHackathon(
+                hackathon3b.getId(), "HackathonModificato", "NuovoRegolamento",
+                "Pescara", 1500.0, 4, organizzatore.getId());
+        System.out.println("Hackathon modificato: " + hackathon3b.getNome());
+        System.out.println();
+
+// UC2 - Aggiungere Mentore
+        System.out.println("UC2: Aggiungere Mentore");
+        Mentore mentore = new Mentore(
+                6L, "Anna", "Russo", "anna@email.com", "pass123",
+                "Bio", "linkedin.com/anna", "Java");
+        hackathonController.aggiungiMentore(hackathon3.getId(), mentore, organizzatore.getId());
+        System.out.println();
+
+// UC3 - Inviare Sottomissione
+        System.out.println("UC3: Inviare Sottomissione");
+        hackathonController.avviaFaseSvolgimento(hackathon3.getId(), organizzatore.getId());
+        Sottomissione sottomissione = sottomissioneController.inviaSottomissione(
+                team3.getId(), hackathon3.getId(),
+                "https://github.com/team3/progetto", leader3.getId());
+        System.out.println("Sottomissione inviata con id: " + sottomissione.getId());
+        System.out.println();
+
+// UC4 - Aggiornare Sottomissione
+        System.out.println("UC4: Aggiornare Sottomissione");
+        sottomissioneController.aggiornaSottomissione(
+                sottomissione.getId(), "https://github.com/team3/progetto-v2", leader3.getId());
+        System.out.println("Sottomissione aggiornata.");
+        System.out.println();
+
+// UC5 - Visualizzare Sottomissioni
+        System.out.println("UC5: Visualizzare Sottomissioni");
+        sottomissioneController.visualizzaSottomissioni(hackathon3.getId(), giudice.getId());
+        System.out.println("Sottomissioni visualizzate.");
+        System.out.println();
+
+// UC6 - Valutare Sottomissione
+        System.out.println("UC6: Valutare Sottomissione");
+        hackathonController.concludiFaseSvolgimento(hackathon3.getId(), organizzatore.getId());
+        Valutazione valutazione = valutazioneController.valutaSottomissione(
+                sottomissione.getId(), "Ottimo lavoro", 9, giudice);
+        System.out.println("Valutazione creata con punteggio: " + valutazione.getPunteggio());
+        System.out.println();
+
+// UC7 - Proclamare Vincitore
+        System.out.println("UC7: Proclamare Vincitore");
+        hackathon3.getTeam().add(team3);
+        hackathonController.proclamaVincitore(
+                hackathon3.getId(), team3.getId(), organizzatore.getId());
+        System.out.println("Vincitore proclamato: " + hackathon3.getTeamVincitore().getNome());
+        System.out.println();
+
+// UC8 - Erogare Premio
+        System.out.println("UC8: Erogare Premio");
+        hackathonController.erogaPremio(hackathon3.getId());
+        System.out.println();
+
+// UC9 - Chiusura Automatica Iscrizioni
+        System.out.println("UC9: Chiusura Automatica Iscrizioni");
+        hackathonController.verificaScadenzaIscrizioni();
+        System.out.println();
     }
+
 }
