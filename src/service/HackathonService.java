@@ -80,4 +80,96 @@ public class HackathonService {
         hackathon.setStato(StatoHackathon.CONCLUSO);
         return hackathonRepository.save(hackathon);
     }
+
+    public Hackathon proclamaVincitore(Long idHackathon, Long idTeamVincitore, Long idOrganizzatore) {
+        Hackathon hackathon = hackathonRepository.findById(idHackathon);
+        if (hackathon == null) {
+            throw new IllegalArgumentException("Hackathon non trovato");
+        }
+        if (!hackathon.getOrganizzatore().getId().equals(idOrganizzatore)) {
+            throw new IllegalArgumentException("Organizzatore non autorizzato");
+        }
+        if (hackathon.getStato() != StatoHackathon.IN_VALUTAZIONE) {
+            throw new IllegalStateException("Stato non valido per proclamare il vincitore");
+        }
+
+        Team vincitore = null;
+        for (Team t : hackathon.getTeam()) {
+            if (t.getId().equals(idTeamVincitore)) {
+                vincitore = t;
+                break;
+            }
+        }
+        if (vincitore == null) {
+            throw new IllegalArgumentException("Team vincitore non trovato");
+        }
+
+        hackathon.setTeamVincitore(vincitore);
+        hackathon.setStato(StatoHackathon.CONCLUSO);
+        System.out.println("Vincitore proclamato: " + vincitore.getNome());
+        return hackathonRepository.save(hackathon);
+    }
+
+    public void erogaPremio(Long idHackathon) {
+        Hackathon hackathon = hackathonRepository.findById(idHackathon);
+        if (hackathon == null) {
+            throw new IllegalArgumentException("Hackathon non trovato");
+        }
+        if (hackathon.getStato() != StatoHackathon.CONCLUSO) {
+            throw new IllegalStateException("Stato non valido per erogare il premio");
+        }
+        if (hackathon.getTeamVincitore() == null) {
+            throw new IllegalStateException("Nessun team vincitore proclamato");
+        }
+
+        PagamentoFacade pagamentoFacade = new PagamentoFacade();
+        pagamentoFacade.erogaPremio(hackathon.getTeamVincitore(), hackathon.getPremioInDenaro());
+    }
+
+    public Hackathon modificaHackathon(Long idHackathon, String nome, String regolamento,
+                                       String luogo, Double premioInDenaro,
+                                       int dimensioneMaxTeam, Long idOrganizzatore) {
+        Hackathon hackathon = hackathonRepository.findById(idHackathon);
+        if (hackathon == null) {
+            throw new IllegalArgumentException("Hackathon non trovato");
+        }
+        if (!hackathon.getOrganizzatore().getId().equals(idOrganizzatore)) {
+            throw new IllegalArgumentException("Organizzatore non autorizzato");
+        }
+        if (hackathon.getStato() != StatoHackathon.IN_ATTESA) {
+            throw new IllegalStateException("Stato non valido per modificare l'hackathon");
+        }
+
+        hackathon.setNome(nome);
+        hackathon.setRegolamento(regolamento);
+        hackathon.setLuogo(luogo);
+        hackathon.setPremioInDenaro(premioInDenaro);
+        hackathon.setDimensioneMaxTeam(dimensioneMaxTeam);
+        System.out.println("Hackathon " + hackathon.getNome() + " modificato.");
+        return hackathonRepository.save(hackathon);
+    }
+
+    public Hackathon aggiungiMentore(Long idHackathon, Mentore mentore, Long idOrganizzatore) {
+        Hackathon hackathon = hackathonRepository.findById(idHackathon);
+        if (hackathon == null) {
+            throw new IllegalArgumentException("Hackathon non trovato");
+        }
+        if (!hackathon.getOrganizzatore().getId().equals(idOrganizzatore)) {
+            throw new IllegalArgumentException("Organizzatore non autorizzato");
+        }
+        if (hackathon.getStato() == StatoHackathon.CONCLUSO) {
+            throw new IllegalStateException("Non è possibile aggiungere mentori a un hackathon concluso");
+        }
+        if (hackathon.getMentori().contains(mentore)) {
+            throw new IllegalStateException("Mentore già assegnato all'hackathon");
+        }
+
+        hackathon.getMentori().add(mentore);
+        System.out.println("Mentore " + mentore.getEmail() + " aggiunto all'hackathon " + hackathon.getNome());
+        return hackathonRepository.save(hackathon);
+    }
+
+    public void verificaScadenzaIscrizioni() {
+        System.out.println("Verifica scadenza iscrizioni in corso...");
+    }
 }
