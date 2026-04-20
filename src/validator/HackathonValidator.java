@@ -35,4 +35,40 @@ public class HackathonValidator {
         }
         System.out.println("Input avviaFase validato correttamente.");
     }
+
+    public void validateInputProclamaVincitore(Long idHackathon, Long idTeamVincitore, Long idOrganizzatore) {
+        if (idHackathon == null) {
+            throw new IllegalArgumentException("idHackathon non può essere null");
+        }
+        if (idTeamVincitore == null) {
+            throw new IllegalArgumentException("idTeamVincitore non può essere null");
+        }
+        if (idOrganizzatore == null) {
+            throw new IllegalArgumentException("idOrganizzatore non può essere null");
+        }
+        System.out.println("Input proclamaVincitore validato correttamente.");
+    }
+
+    public void validateInputModificaHackathon(Long idHackathon, Long idOrganizzatore) {
+        if (idHackathon == null) {
+            throw new IllegalArgumentException("idHackathon non può essere null");
+        }
+        if (idOrganizzatore == null) {
+            throw new IllegalArgumentException("idOrganizzatore non può essere null");
+        }
+        System.out.println("Input modificaHackathon validato correttamente.");
+    }
+
+    public void validateInputAggiungiMentore(Long idHackathon, Long idMentore, Long idOrganizzatore) {
+        if (idHackathon == null) {
+            throw new IllegalArgumentException("idHackathon non può essere null");
+        }
+        if (idMentore == null) {
+            throw new IllegalArgumentException("idMentore non può essere null");
+        }
+        if (idOrganizzatore == null) {
+            throw new IllegalArgumentException("idOrganizzatore non può essere null");
+        }
+        System.out.println("Input aggiungiMentore validato correttamente.");
+    }
 }

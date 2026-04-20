@@ -4,6 +4,7 @@ import model.Hackathon;
 import model.Organizzatore;
 import service.HackathonService;
 import validator.HackathonValidator;
+import model.Mentore;
 
 public class HackathonController {
 
@@ -44,5 +45,32 @@ public class HackathonController {
     public Hackathon concludiFaseSvolgimento(Long idHackathon, Long idOrganizzatore) {
         hackathonValidator.validateInputAvviaFase(idHackathon, idOrganizzatore);
         return hackathonService.concludiFaseSvolgimento(idHackathon, idOrganizzatore);
+    }
+
+    public Hackathon proclamaVincitore(Long idHackathon, Long idTeamVincitore, Long idOrganizzatore) {
+        hackathonValidator.validateInputProclamaVincitore(idHackathon, idTeamVincitore, idOrganizzatore);
+        return hackathonService.proclamaVincitore(idHackathon, idTeamVincitore, idOrganizzatore);
+    }
+
+    public void erogaPremio(Long idHackathon) {
+        hackathonService.erogaPremio(idHackathon);
+    }
+
+    public Hackathon modificaHackathon(Long idHackathon, String nome, String regolamento,
+                                       String luogo, Double premioInDenaro,
+                                       int dimensioneMaxTeam, Long idOrganizzatore) {
+        hackathonValidator.validateInputModificaHackathon(idHackathon, idOrganizzatore);
+        return hackathonService.modificaHackathon(idHackathon, nome, regolamento,
+                luogo, premioInDenaro,
+                dimensioneMaxTeam, idOrganizzatore);
+    }
+
+    public Hackathon aggiungiMentore(Long idHackathon, Mentore mentore, Long idOrganizzatore) {
+        hackathonValidator.validateInputAggiungiMentore(idHackathon, mentore.getId(), idOrganizzatore);
+        return hackathonService.aggiungiMentore(idHackathon, mentore, idOrganizzatore);
+    }
+
+    public void verificaScadenzaIscrizioni() {
+        hackathonService.verificaScadenzaIscrizioni();
     }
 }

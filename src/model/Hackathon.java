@@ -18,6 +18,7 @@ public class Hackathon {
     private StatoHackathon stato;
     private Organizzatore organizzatore;
     private List<Team> team;
+    private Team teamVincitore;
 
     public Hackathon(Long id, String nome, String regolamento, String luogo,
                      Double premioInDenaro, int dimensioneMaxTeam,
@@ -128,4 +129,22 @@ public class Hackathon {
     public void setTeam(List<Team> team) {
         this.team = team;
     }
+    public Team getTeamVincitore() {
+        return teamVincitore;
+    }
+
+    public void setTeamVincitore(Team teamVincitore) {
+        this.teamVincitore = teamVincitore;
+    }
+
+    private List<Mentore> mentori = new ArrayList<>();
+
+    public List<Mentore> getMentori() {
+        return mentori;
+    }
+
+    public void setMentori(List<Mentore> mentori) {
+        this.mentori = mentori;
+    }
+
 }
