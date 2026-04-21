@@ -36,7 +36,7 @@ public class ValutazioneService {
             throw new IllegalStateException("Sottomissione già valutata");
         }
 
-        Valutazione valutazione = new Valutazione(null, giudizio, punteggio,
+        Valutazione valutazione = new Valutazione(null, giudizio, (double) punteggio,
                 sottomissione, giudice);
         System.out.println("Sottomissione valutata dal giudice " + giudice.getEmail());
         return valutazioneRepository.save(valutazione);
