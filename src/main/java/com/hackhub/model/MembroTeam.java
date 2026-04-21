@@ -1,23 +1,19 @@
 package com.hackhub.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "membri_team")
 public class MembroTeam extends Utente {
 
+    @ManyToOne
+    @JoinColumn(name = "team_id")
     private Team team;
+
+    public MembroTeam() {}
 
     public MembroTeam(Long id, String nome, String cognome, String email, String password) {
         super(id, nome, cognome, email, password);
-    }
-
-    public void partecipaHackathon(Hackathon hackathon) {
-        System.out.println("Membro " + getEmail() + " partecipa all'hackathon " + hackathon.getNome());
-    }
-
-    public void inviaRichiestaSupporto(Mentore mentore) {
-        System.out.println("Membro " + getEmail() + " ha inviato una richiesta di supporto a " + mentore.getEmail());
-    }
-
-    public void inviaSegnalazione(Hackathon hackathon) {
-        System.out.println("Membro " + getEmail() + " ha inviato una segnalazione per l'hackathon " + hackathon.getNome());
     }
 
     public Team getTeam() { return team; }

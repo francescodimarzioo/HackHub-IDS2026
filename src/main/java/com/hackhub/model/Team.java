@@ -1,22 +1,38 @@
 package com.hackhub.model;
 
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "team")
 public class Team {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String nome;
+
+    @ManyToOne
+    @JoinColumn(name = "hackathon_id")
     private Hackathon hackathon;
-    private List<MembroTeam> membri;
+
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    private List<MembroTeam> membri = new ArrayList<>();
+
+    @OneToOne
+    @JoinColumn(name = "leader_id")
     private LeaderTeam leader;
+
+    public Team() {}
 
     public Team(Long id, String nome, Hackathon hackathon, LeaderTeam leader) {
         this.id = id;
         this.nome = nome;
         this.hackathon = hackathon;
         this.leader = leader;
-        this.membri = new ArrayList<>();
     }
 
     public void aggiungiMembro(MembroTeam membro) {
