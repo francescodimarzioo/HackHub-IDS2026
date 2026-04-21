@@ -1,15 +1,32 @@
 package com.hackhub.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "valutazioni")
 public class Valutazione {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String giudizio;
-    private int punteggio;
+
+    @Column(nullable = false)
+    private Double punteggio;
+
+    @ManyToOne
+    @JoinColumn(name = "sottomissione_id")
     private Sottomissione sottomissione;
+
+    @ManyToOne
+    @JoinColumn(name = "giudice_id")
     private Giudice giudice;
 
-    public Valutazione(Long id, String giudizio, int punteggio,
-                       Sottomissione sottomissione, Giudice giudice) {
+    public Valutazione() {}
+
+    public Valutazione(Long id, String giudizio, Double punteggio, Sottomissione sottomissione, Giudice giudice) {
         this.id = id;
         this.giudizio = giudizio;
         this.punteggio = punteggio;
@@ -17,43 +34,14 @@ public class Valutazione {
         this.giudice = giudice;
     }
 
-    public String getGiudizio() {
-        return giudizio;
-    }
-
-    public void setGiudizio(String giudizio) {
-        this.giudizio = giudizio;
-    }
-
-    public int getPunteggio() {
-        return punteggio;
-    }
-
-    public void setPunteggio(int punteggio) {
-        this.punteggio = punteggio;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Sottomissione getSottomissione() {
-        return sottomissione;
-    }
-
-    public void setSottomissione(Sottomissione sottomissione) {
-        this.sottomissione = sottomissione;
-    }
-
-    public Giudice getGiudice() {
-        return giudice;
-    }
-
-    public void setGiudice(Giudice giudice) {
-        this.giudice = giudice;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getGiudizio() { return giudizio; }
+    public void setGiudizio(String giudizio) { this.giudizio = giudizio; }
+    public Double getPunteggio() { return punteggio; }
+    public void setPunteggio(Double punteggio) { this.punteggio = punteggio; }
+    public Sottomissione getSottomissione() { return sottomissione; }
+    public void setSottomissione(Sottomissione sottomissione) { this.sottomissione = sottomissione; }
+    public Giudice getGiudice() { return giudice; }
+    public void setGiudice(Giudice giudice) { this.giudice = giudice; }
 }
