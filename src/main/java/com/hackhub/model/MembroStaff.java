@@ -1,14 +1,21 @@
 package com.hackhub.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "membri_staff")
 public class MembroStaff extends Utente {
 
+    @Column
     private String bio;
+
+    @Column(name = "link_profilo")
     private String linkProfilo;
 
-    public MembroStaff(Long id, String nome, String cognome, String email, String password, String bio, String linkProfilo) {
+    public MembroStaff() {}
+
+    public MembroStaff(Long id, String nome, String cognome, String email, String password) {
         super(id, nome, cognome, email, password);
-        this.bio = bio;
-        this.linkProfilo = linkProfilo;
     }
 
     public String getBio() { return bio; }
