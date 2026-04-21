@@ -1,34 +1,28 @@
 package com.hackhub.model;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "segnalazioni")
 public class Segnalazione {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String descrizione;
+
+    @Column(name = "data_invio")
     private LocalDateTime dataInvio;
-    private Mentore segnalante;
-    private Team teamSegnalato;
-    private Hackathon hackathon;
 
-    public Segnalazione(Long id, String descrizione, Mentore segnalante, Team teamSegnalato, Hackathon hackathon) {
-        this.id = id;
-        this.descrizione = descrizione;
-        this.segnalante = segnalante;
-        this.teamSegnalato = teamSegnalato;
-        this.hackathon = hackathon;
-        this.dataInvio = LocalDateTime.now();
-    }
+    @Column(nullable = false)
+    private String stato;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public String getDescrizione() { return descrizione; }
-    public void setDescrizione(String descrizione) { this.descrizione = descrizione; }
-    public LocalDateTime getDataInvio() { return dataInvio; }
-    public Mentore getSegnalante() { return segnalante; }
-    public void setSegnalante(Mentore segnalante) { this.segnalante = segnalante; }
-    public Team getTeamSegnalato() { return teamSegnalato; }
-    public void setTeamSegnalato(Team teamSegnalato) { this.teamSegnalato = teamSegnalato; }
-    public Hackathon getHackathon() { return hackathon; }
-    public void setHackathon(Hackathon hackathon) { this.hackathon = hackathon; }
-}
+    @ManyToOne
+    @JoinColumn(name = "segnalante_id")
+    private MembroTeam segnalante;
+
+    @ManyToOne
+    @JoinColumn(name = "memb
