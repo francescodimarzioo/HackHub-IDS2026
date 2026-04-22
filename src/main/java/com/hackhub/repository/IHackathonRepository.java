@@ -1,12 +1,9 @@
 package com.hackhub.repository;
 
-import com.hackhub.model.*;
-
 import com.hackhub.model.Hackathon;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface IHackathonRepository {
-
-    Hackathon findById(Long id);
-
-    Hackathon save(Hackathon hackathon);
+@Repository
+public interface IHackathonRepository extends JpaRepository<Hackathon, Long> {
 }
