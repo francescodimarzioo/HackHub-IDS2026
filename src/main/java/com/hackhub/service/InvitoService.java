@@ -2,26 +2,20 @@ package com.hackhub.service;
 
 import com.hackhub.model.*;
 import com.hackhub.repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import com.hackhub.model.Invito;
-import com.hackhub.model.Team;
-import com.hackhub.model.Utente;
-import com.hackhub.repository.IInvitoRepository;
-import com.hackhub.repository.IUtenteRepository;
-
+@Service
 public class InvitoService {
 
+    @Autowired
     private IInvitoRepository invitoRepository;
+
+    @Autowired
     private IUtenteRepository utenteRepository;
 
-    public InvitoService(IInvitoRepository invitoRepository,
-                         IUtenteRepository utenteRepository) {
-        this.invitoRepository = invitoRepository;
-        this.utenteRepository = utenteRepository;
-    }
-
     public Invito invitaUtente(Long idTeam, Long idDestinatario, Long idLeader) {
-        Utente destinatario = utenteRepository.findById(idDestinatario);
+        Utente destinatario = utenteRepository.findById(idDestinatario).orElse(null);
         if (destinatario == null) {
             throw new IllegalArgumentException("Utente non trovato");
         }
@@ -34,7 +28,7 @@ public class InvitoService {
     }
 
     public Invito rispondiInvito(Long idInvito, String risposta, Long idUtente) {
-        Invito invito = invitoRepository.findById(idInvito);
+        Invito invito = invitoRepository.findById(idInvito).orElse(null);
         if (invito == null) {
             throw new IllegalArgumentException("Invito non trovato");
         }
