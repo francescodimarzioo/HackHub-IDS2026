@@ -2,7 +2,10 @@ package com.hackhub.validator;
 
 import com.hackhub.model.*;
 import com.hackhub.dto.*;
+import org.springframework.stereotype.Component;
 
+
+@Component
 public class ValutazioneValidator {
 
     public void validateInputUtente(Long idSottomissione, String giudizio,
