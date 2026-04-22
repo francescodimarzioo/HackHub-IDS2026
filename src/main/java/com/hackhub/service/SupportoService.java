@@ -53,25 +53,15 @@ public class SupportoService {
             throw new IllegalArgumentException("Mentore non autorizzato");
         }
 
-        LinkCallStrategy strategy;
+        String link;
         if (tipoCall.equals("ZOOM")) {
-            strategy = new ZoomStrategy();
+            link = new ZoomStrategy("meeting-" + idRichiesta, "pwd123").generaLink();
         } else if (tipoCall.equals("GOOGLE_MEET")) {
-            strategy = new GoogleMeetStrategy();
+            link = new GoogleMeetStrategy("meet-" + idRichiesta).generaLink();
         } else {
             throw new IllegalArgumentException("Tipo call non valido");
         }
 
-        String link;
-        if (tipoCall.equals("ZOOM")) {
-            ZoomStrategy strategy = new ZoomStrategy("meeting-" + idRichiesta, "pwd123");
-            link = strategy.generaLink();
-        } else if (tipoCall.equals("GOOGLE_MEET")) {
-            GoogleMeetStrategy strategy = new GoogleMeetStrategy("meet-" + idRichiesta);
-            link = strategy.generaLink();
-        } else {
-            throw new IllegalArgumentException("Tipo call non valido");
-        }
         richiesta.setLinkCall(link);
         return richiestaSupportoRepository.save(richiesta);
     }
