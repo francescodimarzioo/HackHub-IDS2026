@@ -2,17 +2,14 @@ package com.hackhub.service;
 
 import com.hackhub.model.*;
 import com.hackhub.repository.*;
-
-import com.hackhub.model.Hackathon;
-import com.hackhub.model.Organizzatore;
-import com.hackhub.model.StatoHackathon;
-import com.hackhub.repository.IHackathonRepository;
-import com.hackhub.model.Mentore;
-import com.hackhub.model.Team;
 import com.hackhub.pattern.PagamentoFacade;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class HackathonService {
 
+    @Autowired
     private IHackathonRepository hackathonRepository;
 
     public HackathonService(IHackathonRepository hackathonRepository) {
@@ -28,7 +25,7 @@ public class HackathonService {
     }
 
     public Hackathon avviaFaseIscrizione(Long idHackathon, Long idOrganizzatore) {
-        Hackathon hackathon = hackathonRepository.findById(idHackathon);
+        Hackathon hackathon = hackathonRepository.findById(id).orElse(null);
         if (hackathon == null) {
             throw new IllegalArgumentException("Hackathon non trovato");
         }
@@ -43,7 +40,7 @@ public class HackathonService {
     }
 
     public Hackathon concludiFaseIscrizione(Long idHackathon, Long idOrganizzatore) {
-        Hackathon hackathon = hackathonRepository.findById(idHackathon);
+        Hackathon hackathon = hackathonRepository.findById(id).orElse(null);
         if (hackathon == null) {
             throw new IllegalArgumentException("Hackathon non trovato");
         }
@@ -58,7 +55,7 @@ public class HackathonService {
     }
 
     public Hackathon avviaFaseSvolgimento(Long idHackathon, Long idOrganizzatore) {
-        Hackathon hackathon = hackathonRepository.findById(idHackathon);
+        Hackathon hackathon = hackathonRepository.findById(id).orElse(null);
         if (hackathon == null) {
             throw new IllegalArgumentException("Hackathon non trovato");
         }
@@ -73,7 +70,7 @@ public class HackathonService {
     }
 
     public Hackathon concludiFaseSvolgimento(Long idHackathon, Long idOrganizzatore) {
-        Hackathon hackathon = hackathonRepository.findById(idHackathon);
+        Hackathon hackathon = hackathonRepository.findById(id).orElse(null);
         if (hackathon == null) {
             throw new IllegalArgumentException("Hackathon non trovato");
         }
@@ -88,7 +85,7 @@ public class HackathonService {
     }
 
     public Hackathon proclamaVincitore(Long idHackathon, Long idTeamVincitore, Long idOrganizzatore) {
-        Hackathon hackathon = hackathonRepository.findById(idHackathon);
+        Hackathon hackathon = hackathonRepository.findById(id).orElse(null);
         if (hackathon == null) {
             throw new IllegalArgumentException("Hackathon non trovato");
         }
@@ -117,7 +114,7 @@ public class HackathonService {
     }
 
     public void erogaPremio(Long idHackathon) {
-        Hackathon hackathon = hackathonRepository.findById(idHackathon);
+        Hackathon hackathon = hackathonRepository.findById(id).orElse(null);
         if (hackathon == null) {
             throw new IllegalArgumentException("Hackathon non trovato");
         }
@@ -135,7 +132,7 @@ public class HackathonService {
     public Hackathon modificaHackathon(Long idHackathon, String nome, String regolamento,
                                        String luogo, Double premioInDenaro,
                                        int dimensioneMaxTeam, Long idOrganizzatore) {
-        Hackathon hackathon = hackathonRepository.findById(idHackathon);
+        Hackathon hackathon = hackathonRepository.findById(id).orElse(null);
         if (hackathon == null) {
             throw new IllegalArgumentException("Hackathon non trovato");
         }
@@ -156,7 +153,7 @@ public class HackathonService {
     }
 
     public Hackathon aggiungiMentore(Long idHackathon, Mentore mentore, Long idOrganizzatore) {
-        Hackathon hackathon = hackathonRepository.findById(idHackathon);
+        Hackathon hackathon = hackathonRepository.findById(id).orElse(null);
         if (hackathon == null) {
             throw new IllegalArgumentException("Hackathon non trovato");
         }
