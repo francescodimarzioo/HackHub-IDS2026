@@ -2,34 +2,22 @@ package com.hackhub.service;
 
 import com.hackhub.model.*;
 import com.hackhub.repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import com.hackhub.model.Hackathon;
-import com.hackhub.model.LeaderTeam;
-import com.hackhub.model.StatoHackathon;
-import com.hackhub.model.Team;
-import com.hackhub.repository.IHackathonRepository;
-import com.hackhub.repository.ITeamRepository;
-
+@Service
 public class TeamService {
 
+    @Autowired
     private ITeamRepository teamRepository;
+
+    @Autowired
     private IHackathonRepository hackathonRepository;
 
-    public TeamService(ITeamRepository teamRepository,
-                       IHackathonRepository hackathonRepository) {
-        this.teamRepository = teamRepository;
-        this.hackathonRepository = hackathonRepository;
-    }
-
     public Team creaTeam(Long idHackathon, String nomeTeam, LeaderTeam leader) {
-        Hackathon hackathon = hackathonRepository.findById(idHackathon);
+        Hackathon hackathon = hackathonRepository.findById(idHackathon).orElse(null);
         if (hackathon == null) {
             throw new IllegalArgumentException("Hackathon non trovato");
-        }
-
-        Team esistente = teamRepository.findByHackathonAndLeader(hackathon, leader);
-        if (esistente != null) {
-            throw new IllegalStateException("Leader ha già un team in questo hackathon");
         }
 
         Team team = new Team(null, nomeTeam, hackathon, leader);
@@ -37,12 +25,12 @@ public class TeamService {
     }
 
     public Team iscriviTeam(Long idTeam, Long idHackathon, Long idLeader) {
-        Hackathon hackathon = hackathonRepository.findById(idHackathon);
+        Hackathon hackathon = hackathonRepository.findById(idHackathon).orElse(null);
         if (hackathon == null) {
             throw new IllegalArgumentException("Hackathon non trovato");
         }
 
-        Team team = teamRepository.findById(idTeam);
+        Team team = teamRepository.findById(idTeam).orElse(null);
         if (team == null) {
             throw new IllegalArgumentException("Team non trovato");
         }
@@ -58,5 +46,27 @@ public class TeamService {
         hackathon.getTeam().add(team);
         hackathonRepository.save(hackathon);
         return team;
+    }
+
+    public Team abbandonaTeam(Long idTeam, Long idMembroTeam) {
+        Team team = teamRepository.findById(idTeam).orElse(null);
+        if (team == null) {
+            throw new IllegalArgumentException("Team non trovato");
+        }
+
+        Hackathon hackathon = team.getHackathon();
+        if (hackathon != null && hackathon.getStato() != StatoHackathon.IN_ISCRIZIONE) {
+            throw new IllegalStateException("Non puoi abbandonare il team in questa fase");
+        }
+
+        MembroTeam membro = team.getMembri().stream()
+                .filter(m -> m.getId().equals(idMembroTeam))
+                .findFirst().orElse(null);
+        if (membro == null) {
+            throw new IllegalArgumentException("Membro non trovato nel team");
+        }
+
+        team.rimuoviMembro(membro);
+        return teamRepository.save(team);
     }
 }
