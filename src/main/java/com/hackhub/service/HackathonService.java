@@ -12,10 +12,6 @@ public class HackathonService {
     @Autowired
     private IHackathonRepository hackathonRepository;
 
-    public HackathonService(IHackathonRepository hackathonRepository) {
-        this.hackathonRepository = hackathonRepository;
-    }
-
     public Hackathon creaHackathon(String nome, String regolamento, String luogo,
                                    Double premioInDenaro, int dimensioneMaxTeam,
                                    Organizzatore organizzatore) {
@@ -25,7 +21,7 @@ public class HackathonService {
     }
 
     public Hackathon avviaFaseIscrizione(Long idHackathon, Long idOrganizzatore) {
-        Hackathon hackathon = hackathonRepository.findById(id).orElse(null);
+        Hackathon hackathon = hackathonRepository.findById(idHackathon).orElse(null);
         if (hackathon == null) {
             throw new IllegalArgumentException("Hackathon non trovato");
         }
@@ -40,7 +36,7 @@ public class HackathonService {
     }
 
     public Hackathon concludiFaseIscrizione(Long idHackathon, Long idOrganizzatore) {
-        Hackathon hackathon = hackathonRepository.findById(id).orElse(null);
+        Hackathon hackathon = hackathonRepository.findById(idHackathon).orElse(null);
         if (hackathon == null) {
             throw new IllegalArgumentException("Hackathon non trovato");
         }
@@ -55,7 +51,7 @@ public class HackathonService {
     }
 
     public Hackathon avviaFaseSvolgimento(Long idHackathon, Long idOrganizzatore) {
-        Hackathon hackathon = hackathonRepository.findById(id).orElse(null);
+        Hackathon hackathon = hackathonRepository.findById(idHackathon).orElse(null);
         if (hackathon == null) {
             throw new IllegalArgumentException("Hackathon non trovato");
         }
@@ -70,7 +66,7 @@ public class HackathonService {
     }
 
     public Hackathon concludiFaseSvolgimento(Long idHackathon, Long idOrganizzatore) {
-        Hackathon hackathon = hackathonRepository.findById(id).orElse(null);
+        Hackathon hackathon = hackathonRepository.findById(idHackathon).orElse(null);
         if (hackathon == null) {
             throw new IllegalArgumentException("Hackathon non trovato");
         }
@@ -85,7 +81,7 @@ public class HackathonService {
     }
 
     public Hackathon proclamaVincitore(Long idHackathon, Long idTeamVincitore, Long idOrganizzatore) {
-        Hackathon hackathon = hackathonRepository.findById(id).orElse(null);
+        Hackathon hackathon = hackathonRepository.findById(idHackathon).orElse(null);
         if (hackathon == null) {
             throw new IllegalArgumentException("Hackathon non trovato");
         }
@@ -114,7 +110,7 @@ public class HackathonService {
     }
 
     public void erogaPremio(Long idHackathon) {
-        Hackathon hackathon = hackathonRepository.findById(id).orElse(null);
+        Hackathon hackathon = hackathonRepository.findById(idHackathon).orElse(null);
         if (hackathon == null) {
             throw new IllegalArgumentException("Hackathon non trovato");
         }
@@ -132,7 +128,7 @@ public class HackathonService {
     public Hackathon modificaHackathon(Long idHackathon, String nome, String regolamento,
                                        String luogo, Double premioInDenaro,
                                        int dimensioneMaxTeam, Long idOrganizzatore) {
-        Hackathon hackathon = hackathonRepository.findById(id).orElse(null);
+        Hackathon hackathon = hackathonRepository.findById(idHackathon).orElse(null);
         if (hackathon == null) {
             throw new IllegalArgumentException("Hackathon non trovato");
         }
@@ -153,7 +149,7 @@ public class HackathonService {
     }
 
     public Hackathon aggiungiMentore(Long idHackathon, Mentore mentore, Long idOrganizzatore) {
-        Hackathon hackathon = hackathonRepository.findById(id).orElse(null);
+        Hackathon hackathon = hackathonRepository.findById(idHackathon).orElse(null);
         if (hackathon == null) {
             throw new IllegalArgumentException("Hackathon non trovato");
         }
