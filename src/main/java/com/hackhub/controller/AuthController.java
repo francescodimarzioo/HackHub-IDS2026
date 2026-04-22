@@ -3,30 +3,33 @@ package com.hackhub.controller;
 import com.hackhub.model.*;
 import com.hackhub.service.*;
 import com.hackhub.validator.*;
-import com.hackhub.dto.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import com.hackhub.model.Utente;
-import com.hackhub.service.AuthService;
-import com.hackhub.validator.AuthValidator;
-
+@RestController
+@RequestMapping("/auth")
 public class AuthController {
 
+    @Autowired
     private AuthService authService;
+
+    @Autowired
     private AuthValidator authValidator;
 
-    public AuthController(AuthService authService, AuthValidator authValidator) {
-        this.authService = authService;
-        this.authValidator = authValidator;
-    }
-
-    public Utente registrati(String nome, String cognome,
-                             String email, String password) {
+    @PostMapping("/registrati")
+    public ResponseEntity<Utente> registrati(@RequestParam String nome,
+                                             @RequestParam String cognome,
+                                             @RequestParam String email,
+                                             @RequestParam String password) {
         authValidator.validateRegistrazione(nome, cognome, email, password);
-        return authService.registrati(nome, cognome, email, password);
+        return ResponseEntity.ok(authService.registrati(nome, cognome, email, password));
     }
 
-    public Utente login(String email, String password) {
+    @PostMapping("/login")
+    public ResponseEntity<Utente> login(@RequestParam String email,
+                                        @RequestParam String password) {
         authValidator.validateLogin(email, password);
-        return authService.login(email, password);
+        return ResponseEntity.ok(authService.login(email, password));
     }
 }

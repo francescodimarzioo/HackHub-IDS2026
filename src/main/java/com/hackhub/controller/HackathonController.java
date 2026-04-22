@@ -3,79 +3,103 @@ package com.hackhub.controller;
 import com.hackhub.model.*;
 import com.hackhub.service.*;
 import com.hackhub.validator.*;
-import com.hackhub.dto.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
-import com.hackhub.model.Hackathon;
-import com.hackhub.model.Organizzatore;
-import com.hackhub.service.HackathonService;
-import com.hackhub.validator.HackathonValidator;
-import com.hackhub.model.Mentore;
-
+@RestController
+@RequestMapping("/hackathon")
 public class HackathonController {
 
+    @Autowired
     private HackathonService hackathonService;
+
+    @Autowired
     private HackathonValidator hackathonValidator;
 
-    public HackathonController(HackathonService hackathonService,
-                               HackathonValidator hackathonValidator) {
-        this.hackathonService = hackathonService;
-        this.hackathonValidator = hackathonValidator;
-    }
-
-    public Hackathon creaHackathon(String nome, String regolamento, String luogo,
-                                   Double premioInDenaro, int dimensioneMaxTeam,
-                                   Organizzatore organizzatore) {
+    @PostMapping("/crea")
+    public ResponseEntity<Hackathon> creaHackathon(@RequestParam String nome,
+                                                   @RequestParam String regolamento,
+                                                   @RequestParam String luogo,
+                                                   @RequestParam Double premioInDenaro,
+                                                   @RequestParam int dimensioneMaxTeam,
+                                                   @RequestParam Long idOrganizzatore) {
         hackathonValidator.validateInputCreaHackathon(nome, regolamento, luogo,
-                premioInDenaro, dimensioneMaxTeam,
-                organizzatore.getId());
-        return hackathonService.creaHackathon(nome, regolamento, luogo,
-                premioInDenaro, dimensioneMaxTeam, organizzatore);
+                premioInDenaro, dimensioneMaxTeam, idOrganizzatore);
+        Organizzatore organizzatore = new Organizzatore();
+        organizzatore.setId(idOrganizzatore);
+        return ResponseEntity.ok(hackathonService.creaHackathon(nome, regolamento, luogo,
+                premioInDenaro, dimensioneMaxTeam, organizzatore));
     }
 
-    public Hackathon avviaFaseIscrizione(Long idHackathon, Long idOrganizzatore) {
+    @PutMapping("/{idHackathon}/avvia-iscrizione")
+    public ResponseEntity<Hackathon> avviaFaseIscrizione(@PathVariable Long idHackathon,
+                                                         @RequestParam Long idOrganizzatore) {
         hackathonValidator.validateInputAvviaFase(idHackathon, idOrganizzatore);
-        return hackathonService.avviaFaseIscrizione(idHackathon, idOrganizzatore);
+        return ResponseEntity.ok(hackathonService.avviaFaseIscrizione(idHackathon, idOrganizzatore));
     }
 
-    public Hackathon concludiFaseIscrizione(Long idHackathon, Long idOrganizzatore) {
+    @PutMapping("/{idHackathon}/concludi-iscrizione")
+    public ResponseEntity<Hackathon> concludiFaseIscrizione(@PathVariable Long idHackathon,
+                                                            @RequestParam Long idOrganizzatore) {
         hackathonValidator.validateInputAvviaFase(idHackathon, idOrganizzatore);
-        return hackathonService.concludiFaseIscrizione(idHackathon, idOrganizzatore);
+        return ResponseEntity.ok(hackathonService.concludiFaseIscrizione(idHackathon, idOrganizzatore));
     }
 
-    public Hackathon avviaFaseSvolgimento(Long idHackathon, Long idOrganizzatore) {
+    @PutMapping("/{idHackathon}/avvia-svolgimento")
+    public ResponseEntity<Hackathon> avviaFaseSvolgimento(@PathVariable Long idHackathon,
+                                                          @RequestParam Long idOrganizzatore) {
         hackathonValidator.validateInputAvviaFase(idHackathon, idOrganizzatore);
-        return hackathonService.avviaFaseSvolgimento(idHackathon, idOrganizzatore);
+        return ResponseEntity.ok(hackathonService.avviaFaseSvolgimento(idHackathon, idOrganizzatore));
     }
 
-    public Hackathon concludiFaseSvolgimento(Long idHackathon, Long idOrganizzatore) {
+    @PutMapping("/{idHackathon}/concludi-svolgimento")
+    public ResponseEntity<Hackathon> concludiFaseSvolgimento(@PathVariable Long idHackathon,
+                                                             @RequestParam Long idOrganizzatore) {
         hackathonValidator.validateInputAvviaFase(idHackathon, idOrganizzatore);
-        return hackathonService.concludiFaseSvolgimento(idHackathon, idOrganizzatore);
+        return ResponseEntity.ok(hackathonService.concludiFaseSvolgimento(idHackathon, idOrganizzatore));
     }
 
-    public Hackathon proclamaVincitore(Long idHackathon, Long idTeamVincitore, Long idOrganizzatore) {
+    @PutMapping("/{idHackathon}/proclama-vincitore")
+    public ResponseEntity<Hackathon> proclamaVincitore(@PathVariable Long idHackathon,
+                                                       @RequestParam Long idTeamVincitore,
+                                                       @RequestParam Long idOrganizzatore) {
         hackathonValidator.validateInputProclamaVincitore(idHackathon, idTeamVincitore, idOrganizzatore);
-        return hackathonService.proclamaVincitore(idHackathon, idTeamVincitore, idOrganizzatore);
+        return ResponseEntity.ok(hackathonService.proclamaVincitore(idHackathon, idTeamVincitore, idOrganizzatore));
     }
 
-    public void erogaPremio(Long idHackathon) {
+    @PostMapping("/{idHackathon}/eroga-premio")
+    public ResponseEntity<Void> erogaPremio(@PathVariable Long idHackathon) {
         hackathonService.erogaPremio(idHackathon);
+        return ResponseEntity.ok().build();
     }
 
-    public Hackathon modificaHackathon(Long idHackathon, String nome, String regolamento,
-                                       String luogo, Double premioInDenaro,
-                                       int dimensioneMaxTeam, Long idOrganizzatore) {
+    @PutMapping("/{idHackathon}/modifica")
+    public ResponseEntity<Hackathon> modificaHackathon(@PathVariable Long idHackathon,
+                                                       @RequestParam String nome,
+                                                       @RequestParam String regolamento,
+                                                       @RequestParam String luogo,
+                                                       @RequestParam Double premioInDenaro,
+                                                       @RequestParam int dimensioneMaxTeam,
+                                                       @RequestParam Long idOrganizzatore) {
         hackathonValidator.validateInputModificaHackathon(idHackathon, idOrganizzatore);
-        return hackathonService.modificaHackathon(idHackathon, nome, regolamento,
-                luogo, premioInDenaro,
-                dimensioneMaxTeam, idOrganizzatore);
+        return ResponseEntity.ok(hackathonService.modificaHackathon(idHackathon, nome, regolamento,
+                luogo, premioInDenaro, dimensioneMaxTeam, idOrganizzatore));
     }
 
-    public Hackathon aggiungiMentore(Long idHackathon, Mentore mentore, Long idOrganizzatore) {
-        hackathonValidator.validateInputAggiungiMentore(idHackathon, mentore.getId(), idOrganizzatore);
-        return hackathonService.aggiungiMentore(idHackathon, mentore, idOrganizzatore);
+    @GetMapping
+    public ResponseEntity<List<Hackathon>> getElencoHackathon() {
+        return ResponseEntity.ok(hackathonService.getElencoHackathon());
     }
 
-    public void verificaScadenzaIscrizioni() {
-        hackathonService.verificaScadenzaIscrizioni();
+    @GetMapping("/{idHackathon}")
+    public ResponseEntity<Hackathon> getDettaglioHackathon(@PathVariable Long idHackathon) {
+        return ResponseEntity.ok(hackathonService.getDettaglioHackathon(idHackathon));
+    }
+
+    @GetMapping("/{idHackathon}/regolamento")
+    public ResponseEntity<String> getRegolamentoHackathon(@PathVariable Long idHackathon) {
+        return ResponseEntity.ok(hackathonService.getRegolamentoHackathon(idHackathon));
     }
 }
