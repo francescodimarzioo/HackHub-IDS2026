@@ -1,5 +1,6 @@
 package com.hackhub.service;
 
+import java.util.List;
 import com.hackhub.model.*;
 import com.hackhub.repository.*;
 import com.hackhub.pattern.PagamentoFacade;
@@ -170,5 +171,21 @@ public class HackathonService {
 
     public void verificaScadenzaIscrizioni() {
         System.out.println("Verifica scadenza iscrizioni in corso...");
+    }
+
+    public List<Hackathon> getElencoHackathon() {
+        return hackathonRepository.findAll();
+    }
+
+    public Hackathon getDettaglioHackathon(Long idHackathon) {
+        return hackathonRepository.findById(idHackathon).orElse(null);
+    }
+
+    public String getRegolamentoHackathon(Long idHackathon) {
+        Hackathon hackathon = hackathonRepository.findById(idHackathon).orElse(null);
+        if (hackathon == null) {
+            throw new IllegalArgumentException("Hackathon non trovato");
+        }
+        return hackathon.getRegolamento();
     }
 }
