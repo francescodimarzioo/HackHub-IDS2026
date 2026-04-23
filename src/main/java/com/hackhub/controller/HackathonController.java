@@ -102,4 +102,9 @@ public class HackathonController {
     public ResponseEntity<String> getRegolamentoHackathon(@PathVariable Long idHackathon) {
         return ResponseEntity.ok(hackathonService.getRegolamentoHackathon(idHackathon));
     }
+
+    @GetMapping("/{idHackathon}/classifica")
+    public ResponseEntity<List<Valutazione>> getClassificaFinale(@PathVariable Long idHackathon) {
+        return ResponseEntity.ok(hackathonService.getClassificaFinale(idHackathon));
+    }
 }

@@ -12,6 +12,8 @@ public class HackathonService {
 
     @Autowired
     private IHackathonRepository hackathonRepository;
+    @Autowired
+    private IValutazioneRepository valutazioneRepository;
 
     public Hackathon creaHackathon(String nome, String regolamento, String luogo,
                                    Double premioInDenaro, int dimensioneMaxTeam,
@@ -187,5 +189,16 @@ public class HackathonService {
             throw new IllegalArgumentException("Hackathon non trovato");
         }
         return hackathon.getRegolamento();
+    }
+
+    public List<Valutazione> getClassificaFinale(Long idHackathon) {
+        Hackathon hackathon = hackathonRepository.findById(idHackathon).orElse(null);
+        if (hackathon == null) {
+            throw new IllegalArgumentException("Hackathon non trovato");
+        }
+        if (hackathon.getStato() != StatoHackathon.CONCLUSO) {
+            throw new IllegalStateException("Hackathon non ancora concluso");
+        }
+        return valutazioneRepository.findBySottomissioneHackathon(hackathon);
     }
 }

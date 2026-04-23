@@ -24,6 +24,7 @@
 /Users/francescodimarzio/IdeaProjects/HackHub/src/main/java/com/hackhub/model/Hackathon.java
 /Users/francescodimarzio/IdeaProjects/HackHub/src/main/java/com/hackhub/model/StatoHackathon.java
 /Users/francescodimarzio/IdeaProjects/HackHub/src/main/java/com/hackhub/pattern/PagamentoFacade.java
+/Users/francescodimarzio/IdeaProjects/HackHub/src/main/java/com/hackhub/validator/SupportoValidator.java
 /Users/francescodimarzio/IdeaProjects/HackHub/src/main/java/com/hackhub/pattern/ZoomStrategy.java
 /Users/francescodimarzio/IdeaProjects/HackHub/src/main/java/com/hackhub/service/HackathonService.java
 /Users/francescodimarzio/IdeaProjects/HackHub/src/main/java/com/hackhub/repository/IRichiestaSupportoRepository.java
@@ -41,6 +42,7 @@
 /Users/francescodimarzio/IdeaProjects/HackHub/src/main/java/com/hackhub/validator/InvitoValidator.java
 /Users/francescodimarzio/IdeaProjects/HackHub/src/main/java/com/hackhub/model/Giudice.java
 /Users/francescodimarzio/IdeaProjects/HackHub/src/main/java/com/hackhub/validator/AuthValidator.java
+/Users/francescodimarzio/IdeaProjects/HackHub/src/main/java/com/hackhub/validator/SegnalazioneValidator.java
 /Users/francescodimarzio/IdeaProjects/HackHub/src/main/java/com/hackhub/repository/IUtenteRepository.java
 /Users/francescodimarzio/IdeaProjects/HackHub/src/main/java/com/hackhub/repository/ISegnalazioneRepository.java
 /Users/francescodimarzio/IdeaProjects/HackHub/src/main/java/com/hackhub/controller/ValutazioneController.java
