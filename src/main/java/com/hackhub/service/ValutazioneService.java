@@ -2,28 +2,21 @@ package com.hackhub.service;
 
 import com.hackhub.model.*;
 import com.hackhub.repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import com.hackhub.model.Giudice;
-import com.hackhub.model.Sottomissione;
-import com.hackhub.model.StatoHackathon;
-import com.hackhub.model.Valutazione;
-import com.hackhub.repository.ISottomissioneRepository;
-import com.hackhub.repository.IValutazioneRepository;
-
+@Service
 public class ValutazioneService {
 
+    @Autowired
     private IValutazioneRepository valutazioneRepository;
-    private ISottomissioneRepository sottomissioneRepository;
 
-    public ValutazioneService(IValutazioneRepository valutazioneRepository,
-                              ISottomissioneRepository sottomissioneRepository) {
-        this.valutazioneRepository = valutazioneRepository;
-        this.sottomissioneRepository = sottomissioneRepository;
-    }
+    @Autowired
+    private ISottomissioneRepository sottomissioneRepository;
 
     public Valutazione valutaSottomissione(Long idSottomissione, String giudizio,
                                            int punteggio, Giudice giudice) {
-        Sottomissione sottomissione = sottomissioneRepository.findById(idSottomissione);
+        Sottomissione sottomissione = sottomissioneRepository.findById(idSottomissione).orElse(null);
         if (sottomissione == null) {
             throw new IllegalArgumentException("Sottomissione non trovata");
         }
@@ -31,12 +24,12 @@ public class ValutazioneService {
             throw new IllegalStateException("Hackathon non in stato IN_VALUTAZIONE");
         }
 
-        Valutazione esistente = valutazioneRepository.findBySottomissione(sottomissione);
+        Valutazione esistente = valutazioneRepository.findBySottomissione(sottomissione).orElse(null);
         if (esistente != null) {
             throw new IllegalStateException("Sottomissione già valutata");
         }
 
-        Valutazione valutazione = new Valutazione(null, giudizio, punteggio,
+        Valutazione valutazione = new Valutazione(null, giudizio, (double) punteggio,
                 sottomissione, giudice);
         System.out.println("Sottomissione valutata dal giudice " + giudice.getEmail());
         return valutazioneRepository.save(valutazione);

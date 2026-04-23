@@ -2,21 +2,18 @@ package com.hackhub.service;
 
 import com.hackhub.model.*;
 import com.hackhub.repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import com.hackhub.model.Utente;
-import com.hackhub.repository.IUtenteRepository;
-
+@Service
 public class AuthService {
 
+    @Autowired
     private IUtenteRepository utenteRepository;
-
-    public AuthService(IUtenteRepository utenteRepository) {
-        this.utenteRepository = utenteRepository;
-    }
 
     public Utente registrati(String nome, String cognome,
                              String email, String password) {
-        Utente esistente = utenteRepository.findByEmail(email);
+        Utente esistente = utenteRepository.findByEmail(email).orElse(null);
         if (esistente != null) {
             throw new IllegalStateException("Email già registrata");
         }
@@ -27,7 +24,7 @@ public class AuthService {
     }
 
     public Utente login(String email, String password) {
-        Utente utente = utenteRepository.findByEmail(email);
+        Utente utente = utenteRepository.findByEmail(email).orElse(null);
         if (utente == null) {
             throw new IllegalArgumentException("Utente non trovato");
         }

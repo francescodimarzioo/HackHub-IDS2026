@@ -1,15 +1,37 @@
 package com.hackhub.model;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "richieste_supporto")
 public class RichiestaSupporto {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String descrizione;
+
+    @Column(name = "data_richiesta")
     private LocalDateTime dataRichiesta;
+
+    @Column(nullable = false)
     private String stato;
+
+    @Column(name = "link_call")
+    private String linkCall;
+
+    @ManyToOne
+    @JoinColumn(name = "richiedente_id")
     private MembroTeam richiedente;
+
+    @ManyToOne
+    @JoinColumn(name = "mentore_id")
     private Mentore mentore;
+
+    public RichiestaSupporto() {}
 
     public RichiestaSupporto(Long id, String descrizione, MembroTeam richiedente) {
         this.id = id;
@@ -37,6 +59,8 @@ public class RichiestaSupporto {
     public LocalDateTime getDataRichiesta() { return dataRichiesta; }
     public String getStato() { return stato; }
     public void setStato(String stato) { this.stato = stato; }
+    public String getLinkCall() { return linkCall; }
+    public void setLinkCall(String linkCall) { this.linkCall = linkCall; }
     public MembroTeam getRichiedente() { return richiedente; }
     public void setRichiedente(MembroTeam richiedente) { this.richiedente = richiedente; }
     public Mentore getMentore() { return mentore; }

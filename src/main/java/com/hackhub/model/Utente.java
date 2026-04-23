@@ -1,15 +1,33 @@
 package com.hackhub.model;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "utenti")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Utente {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String nome;
+
+    @Column(nullable = false)
     private String cognome;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(name = "data_registrazione")
     private LocalDateTime dataRegistrazione;
+
+    public Utente() {}
 
     public Utente(Long id, String nome, String cognome, String email, String password) {
         this.id = id;

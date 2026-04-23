@@ -2,29 +2,25 @@ package com.hackhub.service;
 
 import com.hackhub.model.*;
 import com.hackhub.repository.*;
-
-import com.hackhub.model.Hackathon;
-import com.hackhub.model.Sottomissione;
-import com.hackhub.model.StatoHackathon;
-import com.hackhub.model.Team;
-import com.hackhub.repository.ISottomissioneRepository;
-import com.hackhub.repository.ITeamRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
+@Service
 public class SottomissioneService {
 
+    @Autowired
     private ISottomissioneRepository sottomissioneRepository;
+
+    @Autowired
     private ITeamRepository teamRepository;
 
-    public SottomissioneService(ISottomissioneRepository sottomissioneRepository,
-                                ITeamRepository teamRepository) {
-        this.sottomissioneRepository = sottomissioneRepository;
-        this.teamRepository = teamRepository;
-    }
+    @Autowired
+    private IHackathonRepository hackathonRepository;
 
     public Sottomissione inviaSottomissione(Long idTeam, Long idHackathon,
                                             String link, Long idLeader) {
-        Team team = teamRepository.findById(idTeam);
+        Team team = teamRepository.findById(idTeam).orElse(null);
         if (team == null) {
             throw new IllegalArgumentException("Team non trovato");
         }
@@ -35,8 +31,8 @@ public class SottomissioneService {
             throw new IllegalStateException("Hackathon non in stato IN_CORSO");
         }
 
-        Sottomissione esistente = sottomissioneRepository.findByTeam(team);
-        if (esistente != null) {
+        List<Sottomissione> esistenti = sottomissioneRepository.findByTeam(team);
+        if (!esistenti.isEmpty()) {
             throw new IllegalStateException("Il team ha già inviato una sottomissione");
         }
 
@@ -47,7 +43,7 @@ public class SottomissioneService {
 
     public Sottomissione aggiornaSottomissione(Long idSottomissione,
                                                String nuovoLink, Long idLeader) {
-        Sottomissione sottomissione = sottomissioneRepository.findById(idSottomissione);
+        Sottomissione sottomissione = sottomissioneRepository.findById(idSottomissione).orElse(null);
         if (sottomissione == null) {
             throw new IllegalArgumentException("Sottomissione non trovata");
         }
@@ -63,8 +59,11 @@ public class SottomissioneService {
     }
 
     public List<Sottomissione> visualizzaSottomissioni(Long idHackathon, Long idGiudice) {
-        List<Sottomissione> sottomissioni = sottomissioneRepository.findByHackathon(
-                new Hackathon(idHackathon, null, null, null, null, 0, null));
+        Hackathon hackathon = hackathonRepository.findById(idHackathon).orElse(null);
+        if (hackathon == null) {
+            throw new IllegalArgumentException("Hackathon non trovato");
+        }
+        List<Sottomissione> sottomissioni = sottomissioneRepository.findByHackathon(hackathon);
         if (sottomissioni.isEmpty()) {
             System.out.println("Nessuna sottomissione trovata per questo hackathon.");
         }

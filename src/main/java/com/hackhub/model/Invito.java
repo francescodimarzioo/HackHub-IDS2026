@@ -1,12 +1,31 @@
 package com.hackhub.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "inviti")
 public class Invito {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "mittente_id")
     private Utente mittente;
+
+    @ManyToOne
+    @JoinColumn(name = "destinatario_id")
     private Utente destinatario;
+
+    @ManyToOne
+    @JoinColumn(name = "team_id")
     private Team team;
+
+    @Column(nullable = false)
     private String stato;
+
+    public Invito() {}
 
     public Invito(Long id, Utente mittente, Utente destinatario, Team team) {
         this.id = id;

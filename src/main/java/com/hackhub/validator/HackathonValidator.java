@@ -2,7 +2,9 @@ package com.hackhub.validator;
 
 import com.hackhub.model.*;
 import com.hackhub.dto.*;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HackathonValidator {
 
     public void validateInputCreaHackathon(String nome, String regolamento,

@@ -1,16 +1,9 @@
 package com.hackhub.repository;
 
-import com.hackhub.model.*;
-
-import com.hackhub.model.Hackathon;
-import com.hackhub.model.LeaderTeam;
 import com.hackhub.model.Team;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ITeamRepository {
-
-    Team findById(Long id);
-
-    Team findByHackathonAndLeader(Hackathon hackathon, LeaderTeam leader);
-
-    Team save(Team team);
+@Repository
+public interface ITeamRepository extends JpaRepository<Team, Long> {
 }

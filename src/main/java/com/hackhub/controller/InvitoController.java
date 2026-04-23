@@ -3,30 +3,33 @@ package com.hackhub.controller;
 import com.hackhub.model.*;
 import com.hackhub.service.*;
 import com.hackhub.validator.*;
-import com.hackhub.dto.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import com.hackhub.model.Invito;
-import com.hackhub.service.InvitoService;
-import com.hackhub.validator.InvitoValidator;
-
+@RestController
+@RequestMapping("/invito")
 public class InvitoController {
 
+    @Autowired
     private InvitoService invitoService;
+
+    @Autowired
     private InvitoValidator invitoValidator;
 
-    public InvitoController(InvitoService invitoService,
-                            InvitoValidator invitoValidator) {
-        this.invitoService = invitoService;
-        this.invitoValidator = invitoValidator;
-    }
-
-    public Invito invitaUtente(Long idTeam, Long idDestinatario, Long idLeader) {
+    @PostMapping("/invita")
+    public ResponseEntity<Invito> invitaUtente(@RequestParam Long idTeam,
+                                               @RequestParam Long idDestinatario,
+                                               @RequestParam Long idLeader) {
         invitoValidator.validateInputUtente(idTeam, idDestinatario, idLeader);
-        return invitoService.invitaUtente(idTeam, idDestinatario, idLeader);
+        return ResponseEntity.ok(invitoService.invitaUtente(idTeam, idDestinatario, idLeader));
     }
 
-    public Invito rispondiInvito(Long idInvito, String risposta, Long idUtente) {
+    @PutMapping("/{idInvito}/rispondi")
+    public ResponseEntity<Invito> rispondiInvito(@PathVariable Long idInvito,
+                                                 @RequestParam String risposta,
+                                                 @RequestParam Long idUtente) {
         invitoValidator.validateInputRisposta(idInvito, risposta, idUtente);
-        return invitoService.rispondiInvito(idInvito, risposta, idUtente);
+        return ResponseEntity.ok(invitoService.rispondiInvito(idInvito, risposta, idUtente));
     }
 }
