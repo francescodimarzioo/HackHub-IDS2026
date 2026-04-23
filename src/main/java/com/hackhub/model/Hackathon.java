@@ -103,4 +103,5 @@ public class Hackathon {
     public void setTeamVincitore(Team teamVincitore) { this.teamVincitore = teamVincitore; }
     public List<Mentore> getMentori() { return mentori; }
     public void setMentori(List<Mentore> mentori) { this.mentori = mentori; }
+
 }
