@@ -312,7 +312,7 @@ Il progetto è stato sviluppato seguendo il **Processo Unificato** in 4 iterazio
 ## Autori
 
 - Francesco Di Marzio
-- Mariadele *(cognome)*
-- Fabiana *(cognome)*
+- Mariadele Di Biase
+- Fabiana Felicioni
 
 **Università di Camerino — Corso di Ingegneria del Software**
